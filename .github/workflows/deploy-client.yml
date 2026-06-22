@@ -30,12 +30,10 @@ jobs:
           git --version
 
       - name: Install client dependencies
-        working-directory: client
-        run: npm ci
+        run: cd client && npm ci
 
       - name: Build client
-        working-directory: client
-        run: npm run build
+        run: cd client && npm run build
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
