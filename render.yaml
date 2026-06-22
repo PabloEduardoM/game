@@ -1,0 +1,16 @@
+# Render service manifest for gametest server
+# Reference: https://render.com/docs/deploy-containers#yaml-configuration
+services:
+  - type: web
+    name: gametest-server
+    env: node
+    region: oregon
+    plan: free
+    branch: main
+    buildCommand: cd server && npm install && npm run build
+    startCommand: cd server && npm run start
+    # Do NOT store secrets here. Create the secret in the Render dashboard
+    # and reference it below using `from:` or set it in the service settings.
+    envVars:
+      - key: DATABASE_URL
+        from: DATABASE_URL
