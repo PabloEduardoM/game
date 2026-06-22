@@ -14,6 +14,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
           persist-credentials: true
 
@@ -45,4 +46,7 @@ jobs:
           user_name: github-actions[bot]
           user_email: github-actions[bot]@users.noreply.github.com
           keep_files: false
+          force_orphan: true
+          allow_empty_commit: true
+          clean: true
           commit_message: 'chore: deploy client to gh-pages from GitHub Actions'
