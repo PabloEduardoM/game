@@ -44,6 +44,7 @@ export class RPGRoom extends Room<{ state: RPGState }> {
   private blockedTiles = new Set<string>();
 
   onCreate() {
+    console.log('[RPGRoom] Room created');
     this.setState(new RPGState());
     this.setPatchRate(100);
     this.setupMapCollisions();
@@ -72,40 +73,47 @@ export class RPGRoom extends Room<{ state: RPGState }> {
   }
 
   async onJoin(client: Client, options: any) {
-    const username = options.username || `Jogador-${Math.floor(Math.random() * 1000)}`;
-    let x = 80;
-    let y = 80;
+    try {
+      console.log(`[RPGRoom] Player joining:`, { sessionId: client.sessionId, options });
+      const username = options.username || `Jogador-${Math.floor(Math.random() * 1000)}`;
+      let x = 80;
+      let y = 80;
 
-    const saved = await this.database.loadCharacter(username);
-    if (saved) {
-      x = saved.x;
-      y = saved.y;
+      const saved = await this.database.loadCharacter(username);
+      if (saved) {
+        x = saved.x;
+        y = saved.y;
+      }
+
+      const player = new PlayerState();
+      player.id = client.sessionId;
+      player.name = username;
+      player.x = x;
+      player.y = y;
+      player.level = saved?.level ?? 1;
+      player.xp = saved?.xp ?? 0;
+      player.gold = saved?.gold ?? 10;
+      player.inventory = new ArraySchema<string>();
+      if (saved?.inventory) {
+        saved.inventory.forEach((item) => player.inventory.push(item));
+      }
+
+      this.state.players.set(client.sessionId, player);
+      console.log(`[RPGRoom] Player added to state:`, { sessionId: client.sessionId, name: player.name, players: Array.from(this.state.players.keys()) });
+      this.broadcast('system', `${player.name} entrou no jogo.`);
+      this.database.saveCharacter(username, {
+        username,
+        level: player.level,
+        xp: player.xp,
+        gold: player.gold,
+        x: player.x,
+        y: player.y,
+        inventory: Array.from(player.inventory)
+      });
+    } catch (error) {
+      console.error(`[RPGRoom] Error in onJoin:`, error);
+      throw error;
     }
-
-    const player = new PlayerState();
-    player.id = client.sessionId;
-    player.name = username;
-    player.x = x;
-    player.y = y;
-    player.level = saved?.level ?? 1;
-    player.xp = saved?.xp ?? 0;
-    player.gold = saved?.gold ?? 10;
-    player.inventory = new ArraySchema<string>();
-    if (saved?.inventory) {
-      saved.inventory.forEach((item) => player.inventory.push(item));
-    }
-
-    this.state.players.set(client.sessionId, player);
-    this.broadcast('system', `${player.name} entrou no jogo.`);
-    this.database.saveCharacter(username, {
-      username,
-      level: player.level,
-      xp: player.xp,
-      gold: player.gold,
-      x: player.x,
-      y: player.y,
-      inventory: Array.from(player.inventory)
-    });
   }
 
   onLeave(client: Client) {

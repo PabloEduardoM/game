@@ -173,7 +173,10 @@ export default class GameScene extends Phaser.Scene {
         this.syncMonsters(state.monsters);
       });
     } catch (error) {
-      const errorText = typeof error === 'object' ? JSON.stringify(error) : String(error);
+      console.error('Connection error:', error);
+      const errorText = error instanceof Error 
+        ? error.message 
+        : typeof error === 'object' ? JSON.stringify(error) : String(error);
       this.add.text(16, 48, `Erro ao conectar: ${errorText}`, { color: '#ff6666' });
     }
   }

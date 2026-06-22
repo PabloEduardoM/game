@@ -9,15 +9,15 @@ const gameServer = new Server();
 
 gameServer.define('rpg', RPGRoom);
 
-async function main() {
-  await gameServer.attach({
-    express: (app) => {
-      app.get('/', (req, res) => {
-        res.send('RPG 2D Online Server is running');
-      });
-    }
-  });
+gameServer.attach({
+  express: (app) => {
+    app.get('/', (_req, res) => {
+      res.send('RPG 2D Online Server is running');
+    });
+  }
+});
 
+async function main() {
   await gameServer.listen(port);
   console.log(`Servidor Colyseus rodando em http://localhost:${port}`);
 }
