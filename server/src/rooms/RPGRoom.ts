@@ -39,7 +39,7 @@ interface MoveMessage {
   dy: number;
 }
 
-export class RPGRoom extends Room<{ state: RPGState }> {
+export class RPGRoom extends Room<RPGState> {
   private database = new Database();
   private blockedTiles = new Set<string>();
 
