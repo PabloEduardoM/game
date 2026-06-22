@@ -1,0 +1,103 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #08121a;
+  color: #f3f5f7;
+}
+
+body {
+  overflow: hidden;
+}
+
+#game-container {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+.login-panel,
+.chat-panel,
+.status-panel {
+  position: absolute;
+  background: rgba(2, 20, 30, 0.88);
+  border: 1px solid #3b6a8a;
+  border-radius: 8px;
+  padding: 12px;
+  color: #e0f0ff;
+  font-size: 14px;
+  z-index: 10;
+}
+
+.login-panel {
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 280px;
+}
+
+.login-panel input,
+.chat-panel input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #3078a3;
+  border-radius: 4px;
+  margin-top: 8px;
+  background: #112233;
+  color: #f3f5f7;
+}
+
+.login-panel button,
+.chat-panel button {
+  margin-top: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  background: #2785c8;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+}
+
+.chat-panel {
+  right: 20px;
+  bottom: 20px;
+  width: 300px;
+  height: 240px;
+}
+
+.chat-messages {
+  width: 100%;
+  height: 160px;
+  overflow-y: auto;
+  border: 1px solid #204b6f;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.35);
+  margin-bottom: 8px;
+}
+
+.status-panel {
+  left: 20px;
+  top: 20px;
+  width: 260px;
+}
+
+.status-panel h3,
+.chat-panel h3 {
+  margin-bottom: 8px;
+}
+
+.status-panel ul {
+  list-style: none;
+  margin-top: 6px;
+}
+
+.status-panel li {
+  margin-bottom: 4px;
+}
