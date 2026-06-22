@@ -12,7 +12,7 @@ gameServer.define('rpg', RPGRoom);
 async function main() {
   await gameServer.attach({
     express: (app) => {
-      app.get('/', (_req, res) => {
+      app.get('/', (req, res) => {
         res.send('RPG 2D Online Server is running');
       });
     }

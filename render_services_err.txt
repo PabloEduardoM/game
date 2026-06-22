@@ -1,0 +1,53 @@
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0* Host api.render.com:443 was resolved.
+* IPv6: (none)
+* IPv4: 216.24.57.6, 216.24.57.250
+*   Trying 216.24.57.6:443...
+* schannel: disabled automatic use of client certificate
+* ALPN: curl offers http/1.1
+* ALPN: server accepted http/1.1
+* Established connection to api.render.com (216.24.57.6 port 443) from 192.168.15.47 port 59281 
+* using HTTP/1.x
+> GET /v1/services HTTP/1.1
+> Host: api.render.com
+> User-Agent: curl/8.19.0
+> Accept: */*
+>  Authorization: Bearer rnd_rg8ghqgvxpM2bdXMMhvDfXAphras
+> 
+* Request completely sent off
+* schannel: remote party requests renegotiation
+* schannel: renegotiating SSL/TLS connection
+* schannel: SSL/TLS connection renegotiated
+< HTTP/1.1 401 Unauthorized
+< Date: Mon, 22 Jun 2026 01:56:34 GMT
+< Content-Type: application/json; charset=utf-8
+< Content-Length: 26
+< Connection: keep-alive
+< referrer-policy: same-origin
+< render-request-id: api-55d88b9964-r5vj4/MJ9Yv86j3p-15596720
+< strict-transport-security: max-age=315360000; includeSubDomains; preload
+< vary: Origin
+< x-content-type-options: nosniff
+< x-frame-options: DENY
+< x-xss-protection: 1; mode=block
+< cf-cache-status: DYNAMIC
+< Server: cloudflare
+< CF-RAY: a0f7a31ffe314931-GRU
+< alt-svc: h3=":443"; ma=86400
+< 
+{ [26 bytes data]
+100     26 100     26   0      0     70      0                              0100     26 100     26   0      0     70      0                              0100     26 100     26   0      0     70      0                              0
+* Connection #0 to host api.render.com:443 left intact
+* URL rejected: Bad hostname
+curl: (3) URL rejected: Bad hostname
+* Could not resolve host: type
+* Store negative name resolve for type:80
+* shutting down connection #1
+curl: (6) Could not resolve host: type
+* Could not resolve host: render_services_err.txt
+* Store negative name resolve for render_services_err.txt:80
+* shutting down connection #2
+curl: (6) Could not resolve host: render_services_err.txt
+* URL rejected: Bad hostname
+curl: (3) URL rejected: Bad hostname
