@@ -71,21 +71,18 @@ Abra o navegador em `http://localhost:5173`.
 ## Deploy gratuito
 
 ### Deploy do client no GitHub Pages
-1. No diretório `client`, gere o build estático:
+1. O projeto agora faz deploy automático ao `gh-pages` sempre que houver push na branch `main`.
+2. O workflow está em `.github/workflows/deploy-client.yml` e executa:
+   - `npm ci` em `/client`
+   - `npm run build`
+   - publica `client/dist` em `gh-pages`
+3. Se quiser validar manualmente, você ainda pode gerar o build localmente:
    ```powershell
    cd client
    npm install
    npm run build
    ```
-2. Publique a pasta `dist` como branch `gh-pages` do GitHub:
-   ```powershell
-   git checkout --orphan gh-pages
-   git --work-tree dist add --all
-   git --work-tree dist commit -m "Deploy client"
-   git push origin HEAD:gh-pages --force
-   git checkout -
-   ```
-3. No GitHub, configure Pages para usar a branch `gh-pages`.
+4. No GitHub, configure Pages para usar a branch `gh-pages`.
 
 > O `vite.config.ts` já inclui `base: './'` para garantir que os assets sejam carregados corretamente.
 
@@ -99,6 +96,23 @@ Abra o navegador em `http://localhost:5173`.
    - `DATABASE_URL` = URL do PostgreSQL local ou Supabase Free
    - `PORT` = 2567 (opcional, Render também fornece automaticamente)
 5. Se estiver usando Supabase Free, copie o `DATABASE_URL` do projeto Supabase e adicione no Render.
+
+### Atualizar o client para produção
+1. No arquivo `client/src/scenes/GameScene.ts`, o cliente agora usa `wss://game-r145.onrender.com` quando não estiver em `localhost`.
+2. Gere o build do client novamente:
+   ```powershell
+   cd client
+   npm install
+   npm run build
+   ```
+3. Publique o conteúdo de `client/dist` no branch `gh-pages` de novo:
+   ```powershell
+   git checkout --orphan gh-pages
+   git --work-tree dist add --all
+   git --work-tree dist commit -m "Atualiza client para servidor Render"
+   git push origin HEAD:gh-pages --force
+   git checkout -
+   ```
 
 ### Banco online preparado para Supabase Free
 - O servidor usa PostgreSQL padrão e pode ser conectado ao Supabase.

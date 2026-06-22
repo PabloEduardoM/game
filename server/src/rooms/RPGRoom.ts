@@ -39,7 +39,7 @@ interface MoveMessage {
   dy: number;
 }
 
-export class RPGRoom extends Room<RPGState> {
+export class RPGRoom extends Room<{ state: RPGState }> {
   private database = new Database();
   private blockedTiles = new Set<string>();
 
@@ -169,7 +169,9 @@ export class RPGRoom extends Room<RPGState> {
   private handleAttack(client: Client) {
     const player = this.state.players.get(client.sessionId);
     if (!player) return;
-    const monster = Array.from(this.state.monsters.values()).find((m) => m.alive && Math.abs(m.x - player.x) < 32 && Math.abs(m.y - player.y) < 32);
+    const monster = Array.from(this.state.monsters.values()).find((m): m is MonsterState => {
+      return (m as MonsterState).alive && Math.abs((m as MonsterState).x - player.x) < 32 && Math.abs((m as MonsterState).y - player.y) < 32;
+    });
     if (!monster) {
       client.send('system', 'Nenhum inimigo por perto.');
       return;

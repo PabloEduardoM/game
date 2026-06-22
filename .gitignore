@@ -8,3 +8,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 coverage
+# Ignore generated TypeScript output in client source directory
+client/src/*.js
+client/src/*.js.map
+# Ignore temporary Render API files
+render_payload.json
+render_response.json

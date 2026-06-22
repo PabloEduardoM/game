@@ -11,19 +11,19 @@ interface RoomState {
 }
 
 export default class GameScene extends Phaser.Scene {
-  private cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
-  private keyA?: Phaser.Input.Keyboard.Key;
-  private keyW?: Phaser.Input.Keyboard.Key;
-  private keyS?: Phaser.Input.Keyboard.Key;
-  private keyD?: Phaser.Input.Keyboard.Key;
-  private pickupKey?: Phaser.Input.Keyboard.Key;
-  private attackKey?: Phaser.Input.Keyboard.Key;
+  private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
+  private keyA!: Phaser.Input.Keyboard.Key;
+  private keyW!: Phaser.Input.Keyboard.Key;
+  private keyS!: Phaser.Input.Keyboard.Key;
+  private keyD!: Phaser.Input.Keyboard.Key;
+  private pickupKey!: Phaser.Input.Keyboard.Key;
+  private attackKey!: Phaser.Input.Keyboard.Key;
   private playerId?: string;
   private playersSprites: Record<string, Phaser.GameObjects.Image> = {};
   private itemSprites: Record<string, Phaser.GameObjects.Image> = {};
   private monsterSprites: Record<string, Phaser.GameObjects.Image> = {};
   private npcSprite?: Phaser.GameObjects.Image;
-  private mapLayer?: Phaser.Tilemaps.TilemapLayer;
+  private mapLayer!: Phaser.Tilemaps.TilemapLayer;
   private chatContainer?: HTMLElement;
   private chatInput?: HTMLInputElement;
   private chatMessages?: HTMLElement;
@@ -37,13 +37,13 @@ export default class GameScene extends Phaser.Scene {
 
   async create(data: LoginData) {
     this.localData = data;
-    this.cursors = this.input.keyboard.createCursorKeys();
-    this.keyA = this.input.keyboard.addKey('A');
-    this.keyW = this.input.keyboard.addKey('W');
-    this.keyS = this.input.keyboard.addKey('S');
-    this.keyD = this.input.keyboard.addKey('D');
-    this.pickupKey = this.input.keyboard.addKey('E');
-    this.attackKey = this.input.keyboard.addKey('F');
+    this.cursors = this.input.keyboard!.createCursorKeys();
+    this.keyA = this.input.keyboard!.addKey('A');
+    this.keyW = this.input.keyboard!.addKey('W');
+    this.keyS = this.input.keyboard!.addKey('S');
+    this.keyD = this.input.keyboard!.addKey('D');
+    this.pickupKey = this.input.keyboard!.addKey('E');
+    this.attackKey = this.input.keyboard!.addKey('F');
     this.add.text(480, 120, 'Conectando...', { fontSize: '18px', color: '#f3f5f7' }).setDepth(1);
     this.createMap();
     this.createNpc();
@@ -83,11 +83,11 @@ export default class GameScene extends Phaser.Scene {
       this.room?.send('move', { dx: vx * this.game.loop.delta / 1000, dy: vy * this.game.loop.delta / 1000 });
     }
 
-    if (Phaser.Input.Keyboard.JustDown(this.pickupKey)) {
+    if (this.pickupKey && Phaser.Input.Keyboard.JustDown(this.pickupKey)) {
       this.room?.send('pickup', 'gem');
     }
 
-    if (Phaser.Input.Keyboard.JustDown(this.attackKey)) {
+    if (this.attackKey && Phaser.Input.Keyboard.JustDown(this.attackKey)) {
       this.room?.send('attack');
     }
   }
@@ -95,8 +95,11 @@ export default class GameScene extends Phaser.Scene {
   private createMap() {
     const map = this.make.tilemap({ key: 'map' });
     const tiles = map.addTilesetImage('tiles', 'tiles');
+    if (!tiles) {
+      throw new Error('Tileset not found');
+    }
     map.createLayer('Ground', tiles, 0, 0);
-    this.mapLayer = map.createLayer('Walls', tiles, 0, 0);
+    this.mapLayer = map.createLayer('Walls', tiles, 0, 0)!;
     this.mapLayer.setCollision([2]);
   }
 
@@ -144,7 +147,9 @@ export default class GameScene extends Phaser.Scene {
   }
 
   private async connectRoom() {
-    const serverUrl = window.location.hostname === 'localhost' ? 'ws://localhost:2567' : `ws://${window.location.hostname}:2567`;
+    const serverUrl = window.location.hostname === 'localhost'
+      ? 'ws://localhost:2567'
+      : 'wss://game-r145.onrender.com';
     const client = new Client(serverUrl);
 
     try {
@@ -244,7 +249,7 @@ export default class GameScene extends Phaser.Scene {
     const message = this.chatInput?.value.trim();
     if (!message || !this.room) return;
     this.room.send('chat', message);
-    this.chatInput.value = '';
+    this.chatInput!.value = '';
   }
 
   private addChatMessage(message: string) {
