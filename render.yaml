@@ -7,8 +7,13 @@ services:
     region: oregon
     plan: free
     branch: main
-    buildCommand: cd server && npm install && npm run build
-    startCommand: cd server && npm run start
+    buildCommand: |
+      cd server
+      npm install
+      npm run build
+    startCommand: |
+      cd server
+      npm run start
     # Do NOT store secrets here. Create the secret in the Render dashboard
     # and reference it below using `from:` or set it in the service settings.
     envVars:
